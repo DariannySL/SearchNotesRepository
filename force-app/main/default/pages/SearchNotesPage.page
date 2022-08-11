@@ -1,0 +1,37 @@
+<apex:page controller="SearchNotesController" lightningStyleSheets="true">
+    <apex:pageBlock >
+            <apex:form >
+                <apex:selectList size="1" value="{!accounts}" style="width: 18rem;">
+                    <apex:selectOptions value="{!options}"></apex:selectOptions>
+                </apex:selectList>
+                <apex:commandButton value="Search" action="{!test}" rerender="table" status="status"/>
+            </apex:form>        
+    </apex:pageBlock>
+    
+    <apex:pageBlock title="Notes" id="table">
+        <apex:form >
+            <apex:outputPanel >
+                <apex:actionstatus id="status" startText="Searching...">
+                    <apex:facet name="stop">
+                        <apex:outputPanel >
+                            <apex:pageBlockTable value="{!notes}" var="note" rows="10">
+                                <apex:column value="{!note.title}"/>
+                                <apex:column value="{!note.body}"/>
+                                <apex:column value="{!note.parent.type}"/>
+                                <apex:column value="{!note.createdBy.name}"/>
+                            </apex:pageBlockTable>
+                            
+                            <br/>
+                            
+                            <apex:commandButton value="Previous" action="{!previous}" reRender="table" disabled="{!prevBool}"/>
+                            <apex:commandButton value="Next" action="{!next}" reRender="table" disabled="{!nextBool}"/> 
+                            
+                            <!--<p>You have selected: {!accounts}</p>-->
+                        </apex:outputPanel>
+                    </apex:facet>
+                </apex:actionstatus>
+            </apex:outputPanel>
+        </apex:form>
+    </apex:pageBlock>
+    
+</apex:page>
