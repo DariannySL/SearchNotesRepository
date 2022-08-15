@@ -1,4 +1,4 @@
-public class SearchNotesPdfController {
+public without sharing class SearchNotesPdfController {
     
     Account account;
     String accountId;
