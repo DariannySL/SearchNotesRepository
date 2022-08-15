@@ -7,6 +7,7 @@ public without sharing class SearchNotesController {
     Public Integer count { get; set; }
     public Boolean nextBool { get; set; }
     public Boolean prevBool { get; set; }
+    public Boolean pdfAvailable { get; set; }
     public List<Note> noteList = new List<Note>();
     
     public PageReference test() {
@@ -16,6 +17,7 @@ public without sharing class SearchNotesController {
     public SearchNotesController() {
 		nextBool = true;
         prevBool = true;
+        pdfAvailable = false;
     }
     
     public List<SelectOption> getOptions() {
@@ -37,7 +39,8 @@ public without sharing class SearchNotesController {
         this.accounts = accounts;
     }
     
-    public List<Note> getNotes() {    
+    public List<Note> getNotes() {
+        notes.clear();
         Set<Id> contactIds = new Set<Id>();
         List<Contact> contacts = [ 
             SELECT Id 
@@ -62,7 +65,11 @@ public without sharing class SearchNotesController {
         
         if(count > 0) {
 			noteResults();
-        }  
+            pdfAvailable = true;
+        }
+        else {
+            pdfAvailable = false;
+        }
         
         if(count > index) {
             nextBool = false;
@@ -74,7 +81,6 @@ public without sharing class SearchNotesController {
     }
     
     public List<Note> noteResults() {
-        notes.clear();
         for(Integer i = start; i < index; i++) {
             if(count == i) 
                 break;   
@@ -119,5 +125,11 @@ public without sharing class SearchNotesController {
             nextBool = false;
             prevBool = true;            
         }
+    }
+    
+    public PageReference goToPdfPage() {
+        PageReference page = new PageReference('https://dariscompany2-dev-ed--c.vf.force.com/apex/SearchNotesPdf?core.apexpages.request.devconsole=1&id=' + accounts);
+        page.setRedirect(true);
+        return page; 
     }
 }

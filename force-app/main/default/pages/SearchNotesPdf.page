@@ -1,0 +1,25 @@
+<apex:page controller="SearchNotesPdfController" showHeader="false" renderAs="pdf">
+    <apex:stylesheet value="{!$Resource.TableStyle}"/>
+    <h1>Account: {!account.name}</h1>
+    
+    <table class="content-table">
+        <thead>
+            <tr>
+                <td>Title</td>
+                <td>Body</td>
+                <td>Object Type</td>
+                <td>Owner Name</td>
+            </tr>
+        </thead>
+        <tbody>
+            <apex:repeat value="{!notes}" var="note">
+                <tr>
+                    <td>{!note.title}</td>
+                    <td>{!note.body}</td>
+                    <td>{!note.createdBy.name}</td>
+                    <td>{!note.parent.type}</td>
+                </tr>
+            </apex:repeat>
+        </tbody>
+    </table>
+</apex:page>

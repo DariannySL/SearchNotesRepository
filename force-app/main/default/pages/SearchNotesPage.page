@@ -1,37 +1,43 @@
 <apex:page controller="SearchNotesController" lightningStyleSheets="true">
+    <apex:stylesheet value="{!$Resource.TableStyle}"/>
     <apex:pageBlock >
-            <apex:form >
-                <apex:selectList size="1" value="{!accounts}" style="width: 18rem;">
-                    <apex:selectOptions value="{!options}"></apex:selectOptions>
-                </apex:selectList>
-                <apex:commandButton value="Search" action="{!test}" rerender="table" status="status"/>
-            </apex:form>        
+        <apex:form >
+            <apex:actionFunction name="changeOption" action="{!test}" reRender="table"/>
+            <apex:selectList size="1" value="{!accounts}" style="width: 18rem;" onchange="changeOption();">
+                <apex:selectOptions value="{!options}"></apex:selectOptions>
+            </apex:selectList>
+        </apex:form>        
     </apex:pageBlock>
     
     <apex:pageBlock title="Notes" id="table">
         <apex:form >
-            <apex:outputPanel >
-                <apex:actionstatus id="status" startText="Searching...">
-                    <apex:facet name="stop">
-                        <apex:outputPanel >
-                            <apex:pageBlockTable value="{!notes}" var="note" rows="10">
-                                <apex:column value="{!note.title}"/>
-                                <apex:column value="{!note.body}"/>
-                                <apex:column value="{!note.parent.type}"/>
-                                <apex:column value="{!note.createdBy.name}"/>
-                            </apex:pageBlockTable>
-                            
-                            <br/>
-                            
-                            <apex:commandButton value="Previous" action="{!previous}" reRender="table" disabled="{!prevBool}"/>
-                            <apex:commandButton value="Next" action="{!next}" reRender="table" disabled="{!nextBool}"/> 
-                            
-                            <!--<p>You have selected: {!accounts}</p>-->
-                        </apex:outputPanel>
-                    </apex:facet>
-                </apex:actionstatus>
-            </apex:outputPanel>
+            <table class="content-table">
+                <thead>
+                    <tr>
+                        <td>Title</td>
+                        <td>Body</td>
+                        <td>Object Type</td>
+                        <td>Owner Name</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <apex:repeat value="{!notes}" var="note">
+                        <tr>
+                            <td>{!note.title}</td>
+                            <td>{!note.body}</td>
+                            <td>{!note.createdBy.name}</td>
+                            <td>{!note.parent.type}</td>
+                        </tr>
+                    </apex:repeat>
+                </tbody>
+            </table>
+            
+            <apex:commandButton value="Previous" action="{!previous}" reRender="table" disabled="{!prevBool}"/>
+            <apex:commandButton value="Next" action="{!next}" reRender="table" disabled="{!nextBool}"/>
+            <apex:commandlink action="{!goToPdfPage}" target="_blank" rendered="{!pdfAvailable}" style="text-decoration:none;">
+                <apex:commandButton value="Generate PDF"/>
+            </apex:commandlink>
+                
         </apex:form>
     </apex:pageBlock>
-    
 </apex:page>
