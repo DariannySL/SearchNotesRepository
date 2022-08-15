@@ -16,8 +16,8 @@
                 <tr>
                     <td>{!note.title}</td>
                     <td>{!note.body}</td>
-                    <td>{!note.createdBy.name}</td>
                     <td>{!note.parent.type}</td>
+                    <td>{!note.createdBy.name}</td>
                 </tr>
             </apex:repeat>
         </tbody>
